@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "arches.fullname" . }}-static
+  labels:
+    {{- include "arches.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    tier: frontend
+    {{- include "arches.selectorLabels" . | nindent 4 }}

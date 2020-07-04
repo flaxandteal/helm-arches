@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "arches.fullname" . }}
+  labels:
+    {{- include "arches.labels" . | nindent 4 }}
+data:
+  COUCHDB_HOST: {{ printf "%s-couchdb" .Release.Name }}
+  COUCHDB_PORT: "5984"
+  COUCHDB_USER: admin
+  DJANGO_DEBUG: "False"
+  DJANGO_MODE: PROD
+  DOMAIN_NAMES: {{ .Values.domainNames }}
+  ESHOST: elasticsearch-master
+  ESPORT: "9200"
+  INSTALL_DEFAULT_CONCEPTS: "False"
+  INSTALL_DEFAULT_GRAPHS: "False"
+  PGDBNAME: arches
+  PGHOST: {{ printf "%s-postgresql" .Release.Name }}
+  PGPORT: "5432"
+  PGUSERNAME: postgres
+  PYTHONUNBUFFERED: "0"
+  TZ: PST

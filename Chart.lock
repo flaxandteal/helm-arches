@@ -1,0 +1,12 @@
+dependencies:
+- name: elasticsearch
+  repository: https://helm.elastic.co/
+  version: 7.7.0
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 8.10.6
+- name: couchdb
+  repository: https://apache.github.io/couchdb-helm
+  version: 3.3.2
+digest: sha256:0275c92d20c6922c1b9dd409d3b918ed6dfe7380d1eb573a4eba2a1c2f76f2a6
+generated: "2020-07-04T14:23:03.275217403+01:00"

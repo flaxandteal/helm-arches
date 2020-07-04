@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "arches.fullname" . }}-static
+  labels:
+    {{- include "arches.labels" . | nindent 4 }}
+data:
+  DOMAIN_NAMES: {{ .Values.domainNames }}
+  LOCAL_PROXY_HOST: arches
+  LOCAL_PROXY_PORT: "8000"
+  NGINX_PROTOCOL: http
+  NGINX_PROXY_MODE: local
+  PUBLIC_MODE: "False"
+  TZ: PST

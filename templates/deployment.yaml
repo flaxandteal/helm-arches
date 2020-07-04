@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "arches.fullname" . }}
+  labels:
+    tier: backend
+    {{- include "arches.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      tier: backend
+      {{- include "arches.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        tier: backend
+        {{- include "arches.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/configmap-env: {{ include (print $.Template.BasePath "/configmap-env.yaml") . | sha256sum }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "arches.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          envFrom:
+          - configMapRef:
+              name: {{ template "fullname" . }}-env
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: postgresql-password
+                name: {{ printf "%s-postgresql" .Release.Name }}
+          - name: COUCHDB_PASS
+            valueFrom:
+              secretKeyRef:
+                key: adminPassword
+                name: {{ printf "%s-couchdb" .Release.Name }}
+          {{- range $env, $value := .Values.secretEnv }}
+          - name: {{ $env }}
+            valueFrom:
+              secretKeyRef:
+                key: {{ $env }}
+                name: {{ template "fullname" $ }}-env
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

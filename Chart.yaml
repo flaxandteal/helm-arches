@@ -1,0 +1,34 @@
+apiVersion: v2
+name: Arches Project
+description: A Helm chart for archesproject.org software
+name: archesproject
+type: application
+version: 0.0.1
+appVersion: 5.0
+keywords:
+  - arches
+  - heritage
+  - geospatial
+  - history
+  - conservation
+  - django
+  - postgis
+home: https://www.archesproject.org/
+sources:
+  - https://github.com/archesproject/arches/
+  - https://github.com/flaxandteal/helm-arches/
+maintainers:
+  - name: Phil Weir
+    email: phil.weir@flaxandteal.co.uk
+icon: https://www.archesproject.org/wp-content/uploads/2020/02/arches-logo-r-only.svg
+engine: gotpl
+dependencies:
+  - name: elasticsearch
+    version: 7.7.0
+    repository: https://helm.elastic.co/
+  - name: postgresql
+    version: 8.10.6
+    repository: https://charts.bitnami.com/bitnami
+  - name: couchdb
+    version: 3.3.2
+    repository: https://apache.github.io/couchdb-helm
