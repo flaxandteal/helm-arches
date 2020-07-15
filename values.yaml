@@ -1,5 +1,5 @@
 # TODO: decide whether these should be directly parsed to/from the optional ingress also
-domainNames: fat-gyt.ev.openindustry.in archesdemo.flaxandteal.co.uk
+domainNames: arches.example.org
 
 global:
   postgresql:
