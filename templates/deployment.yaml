@@ -30,7 +30,7 @@ spec:
         - name: {{ .Chart.Name }}
           envFrom:
           - configMapRef:
-              name: {{ template "fullname" . }}-env
+              name: {{ template "arches.fullname" . }}-env
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
@@ -65,7 +65,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: {{ $env }}
-                name: {{ template "fullname" $ }}-env
+                name: {{ template "arches.fullname" $ }}-env
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

@@ -4,7 +4,7 @@ description: A Helm chart for archesproject.org software
 name: archesproject
 type: application
 version: 0.0.1
-appVersion: 5.0
+appVersion: "5.0"
 keywords:
   - arches
   - heritage

@@ -17,7 +17,7 @@ image:
 
 imageStatic:
   repository: flaxandteal/arches-static
-  tag: latest
+  tag: "5.0"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -81,7 +81,7 @@ postgresql:
   extraEnv:
     - name: POSTGRES_MULTIPLE_EXTENSIONS
       value: postgis,postgis_topology
-  initdbScriptsConfigMap: "{{ .Release.Name }}-arches-init-db"
+  initdbScriptsConfigMap: "{{ .Release.Name }}-archesproject-init-db"
 
 couchdb:
   adminUsername: admin

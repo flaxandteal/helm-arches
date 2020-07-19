@@ -1,3 +1,19 @@
-FROM nginx:latest
+FROM getty/arches:5.0 as arches
 
-COPY static /usr/share/nginx/html
+ENV DJANGO_MODE=prod
+ENV DJANGO_DEBUG=False
+ENV STATIC_ROOT=/static_root
+
+RUN ../entrypoint.sh init_yarn_components
+
+# FIXME: To be replaced once per-project settings working
+RUN rm ${ARCHES_ROOT}/arches/settings_local.py && echo "STATIC_ROOT='${STATIC_ROOT}'" > ${ARCHES_ROOT}/arches/settings_local.py
+
+RUN cat ${ARCHES_ROOT}/arches/settings_local.py && ../entrypoint.sh collect_static
+
+FROM nginxinc/nginx-unprivileged:1.18
+
+COPY --from=arches /static_root /usr/share/nginx/html
+
+# Must be numeric to verify not root
+USER 33

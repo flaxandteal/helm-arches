@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "arches.fullname" . }}
+  name: {{ include "arches.fullname" . }}-static
   labels:
     tier: frontend
     {{- include "arches.labels" . | nindent 4 }}
@@ -30,7 +30,7 @@ spec:
         - name: {{ .Chart.Name }}
           envFrom:
           - configMapRef:
-              name: {{ template "fullname" . }}-env-static
+              name: {{ template "arches.fullname" . }}-env-static
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.imageStatic.repository }}:{{ .Values.imageStatic.tag }}"
