@@ -15,6 +15,7 @@ data:
   ESPORT: "9200"
   INSTALL_DEFAULT_CONCEPTS: "False"
   INSTALL_DEFAULT_GRAPHS: "False"
+  MOBILE_OAUTH_CLIENT_ID: {{ .Values.mobileOauthClientId }}
   PGDBNAME: arches
   PGHOST: {{ printf "%s-postgresql" .Release.Name }}
   PGPORT: "5432"

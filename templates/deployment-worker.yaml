@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "arches.fullname" . }}
+  name: {{ include "arches.fullname" . }}-worker
   labels:
-    tier: backend
+    tier: worker
     {{- include "arches.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      tier: backend
+      tier: worker
       {{- include "arches.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        tier: backend
+        tier: worker
         {{- include "arches.selectorLabels" . | nindent 8 }}
       annotations:
         checksum/configmap-env: {{ include (print $.Template.BasePath "/configmap-env.yaml") . | sha256sum }}
@@ -35,20 +35,9 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 8000
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          command: ['../entrypoint.sh', 'run_celery']
           env:
           - name: PGPASSWORD
             valueFrom:

@@ -23,6 +23,7 @@ imageStatic:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
+mobileOauthClientId: null
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -88,3 +89,8 @@ couchdb:
   couchdbConfig:
     couchdb:
       uuid: <YOUR_NEW_COUCHDB_UUID>
+
+rabbitmq:
+  rabbitmq:
+    username: user
+    password: <YOUR_NEW_RABBITMQ_PASSWORD> # TODO: needs improved
