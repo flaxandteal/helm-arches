@@ -1,6 +1,5 @@
-# Helm Chart for Arches
+# Arches Unofficial Chart Repository
 
-## 0.0.0 - Prototype
+## v0.0.1
 
-This skeleton shows a prototypal Helm chart for running
-Arches on Kubernetes.
+
