@@ -7,9 +7,9 @@ dependencies:
   version: 8.10.6
 - name: couchdb
   repository: https://apache.github.io/couchdb-helm
-  version: 3.3.2
+  version: 3.3.4
 - name: rabbitmq
-  repository: https://kubernetes-charts.storage.googleapis.com/
-  version: 6.18.2
-digest: sha256:7af306cb428ace021c781680b3cf83d0db10a0855b767cb520654de5ec4121e2
-generated: "2020-10-04T01:19:48.990096408+01:00"
+  repository: https://charts.bitnami.com/bitnami
+  version: 8.15.1
+digest: sha256:12ac64ef57115f488574e9811d0dfda19a2c5c8bb917848912775b6e82893846
+generated: "2021-05-24T18:27:34.280616423+01:00"

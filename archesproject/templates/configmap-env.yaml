@@ -5,17 +5,21 @@ metadata:
   labels:
     {{- include "arches.labels" . | nindent 4 }}
 data:
+  ARCHES_ROOT: "/web_root/arches"
+  ARCHES_PROJECT: "{{ .Values.archesProject }}"
   COUCHDB_HOST: {{ printf "%s-couchdb" .Release.Name }}
   COUCHDB_PORT: "5984"
   COUCHDB_USER: admin
   DJANGO_DEBUG: "False"
   DJANGO_MODE: PROD
+  DJANGO_SETTINGS_MODULE: "{{ .Values.archesProject }}.settings"
+  DJANGO_SECRET_KEY: "c7ky-mc6vdnv+avp0r@(a)8y^51ex=25nogq@+q5$fnc*mxwdi"
   DOMAIN_NAMES: {{ .Values.domainNames }}
   ESHOST: elasticsearch-master
   ESPORT: "9200"
   INSTALL_DEFAULT_CONCEPTS: "False"
   INSTALL_DEFAULT_GRAPHS: "False"
-  MOBILE_OAUTH_CLIENT_ID: {{ .Values.mobileOauthClientId }}
+  MOBILE_OAUTH_CLIENT_ID: "{{ default "" .Values.mobileOauthClientId }}"
   PGDBNAME: arches
   PGHOST: {{ printf "%s-postgresql" .Release.Name }}
   PGPORT: "5432"

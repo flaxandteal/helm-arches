@@ -29,8 +29,8 @@ dependencies:
     version: 8.10.6
     repository: https://charts.bitnami.com/bitnami
   - name: couchdb
-    version: 3.3.2
+    version: 3.3.4
     repository: https://apache.github.io/couchdb-helm
   - name: rabbitmq
-    repository: https://kubernetes-charts.storage.googleapis.com/
-    version: 6.18.2
+    repository: https://charts.bitnami.com/bitnami
+    version: 8.15.1
