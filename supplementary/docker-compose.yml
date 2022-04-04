@@ -5,7 +5,7 @@ services:
 
     arches:
       container_name: arches
-      image: $ARCHES_PROJECT
+      image: arches_${ARCHES_PROJECT}:latest
       restart: unless-stopped
       entrypoint: ["../../entrypoint.sh"]
       build:
@@ -51,7 +51,7 @@ services:
 
     arches_worker:
       container_name: arches_worker
-      image: $ARCHES_PROJECT
+      image: arches_${ARCHES_PROJECT}:latest
       restart: unless-stopped
       entrypoint: ["../../entrypoint.sh"]
       build:

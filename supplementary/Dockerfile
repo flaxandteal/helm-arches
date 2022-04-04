@@ -9,5 +9,6 @@ COPY settings_docker.py ${WEB_ROOT}/arches/arches/
 WORKDIR ${WEB_ROOT}/${ARCHES_PROJECT}/${ARCHES_PROJECT}
 RUN mkdir -p /static_root && chown -R arches /static_root
 RUN yarn install
-ENTRYPOINT ../entrypoint.sh
+WORKDIR ${WEB_ROOT}/${ARCHES_PROJECT}
+ENTRYPOINT ./entrypoint.sh
 USER 1000
