@@ -7,6 +7,8 @@ metadata:
 data:
   ARCHES_ROOT: "/web_root/arches"
   ARCHES_PROJECT: "{{ .Values.archesProject }}"
+  COMPRESS_ENABLED: "True"
+  COMPRESS_OFFLINE: "True"
   COUCHDB_HOST: {{ printf "%s-couchdb" .Release.Name }}
   COUCHDB_PORT: "5984"
   COUCHDB_USER: admin
@@ -20,6 +22,8 @@ data:
   INSTALL_DEFAULT_CONCEPTS: "False"
   INSTALL_DEFAULT_GRAPHS: "False"
   MOBILE_OAUTH_CLIENT_ID: "{{ default "" .Values.mobileOauthClientId }}"
+  STATIC_ROOT: "{{ .Values.staticRoot }}"
+  STATIC_URL: "{{ .Values.staticUrl }}"
   PGDBNAME: arches
   PGHOST: {{ printf "%s-postgresql" .Release.Name }}
   PGPORT: "5432"

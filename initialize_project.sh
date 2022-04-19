@@ -43,3 +43,9 @@ if ! grep -q 'from arches\.settings_docker import \*' $ARCHES_PROJECT/$ARCHES_PR
 then
   echo "\nfrom arches.settings_docker import *\n" >> $ARCHES_PROJECT/$ARCHES_PROJECT/settings.py
 fi
+
+# Build dynamic (development) images
+docker-compose -f docker-compose.yml build
+
+# Build deployable images
+STATIC_URL="http://localhost:8080/" docker-compose -f docker-compose-static.yml build

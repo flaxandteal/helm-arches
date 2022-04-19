@@ -320,6 +320,8 @@ collect_static_real(){
 	echo ""
 	cd_app_folder
 	python manage.py collectstatic --noinput
+	python manage.py compress
+	ls -l /static_root/CACHE/css
 }
 
 
@@ -356,9 +358,8 @@ run_gunicorn_server() {
 	cd_app_folder
 	
 	if [[ ! -z ${ARCHES_PROJECT} ]]; then
-        gunicorn arches.wsgi:application \
-            --config ${ARCHES_ROOT}/gunicorn_config.py \
-            --pythonpath ${ARCHES_PROJECT}
+        gunicorn ${ARCHES_PROJECT}.wsgi:application \
+            --config ${ARCHES_ROOT}/gunicorn_config.py
 	else
         gunicorn arches.wsgi:application \
             --config ${ARCHES_ROOT}/gunicorn_config.py

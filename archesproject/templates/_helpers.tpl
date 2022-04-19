@@ -66,5 +66,5 @@ Create the name of the service account to use
 Calculate the address of the RabbitMQ broker
 */}}
 {{- define "arches.rabbitMqUrl" -}}
-    amqp://{{ .Values.rabbitmq.rabbitmq.username }}:{{ .Values.rabbitmq.rabbitmq.password }}@{{- .Release.Name | trunc 63 | trimSuffix "-" -}}-rabbitmq:5672
+    amqp://{{ .Values.rabbitmq.auth.username }}:{{ .Values.rabbitmq.auth.password }}@{{- .Release.Name | trunc 63 | trimSuffix "-" -}}-rabbitmq:5672
 {{- end -}}

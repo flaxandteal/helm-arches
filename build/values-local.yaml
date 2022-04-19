@@ -1,5 +1,6 @@
 # TODO: decide whether these should be directly parsed to/from the optional ingress also
 domainNames: minikube.local
+staticUrl: http://minikube.local/media/
 
 archesProject: my_project
 

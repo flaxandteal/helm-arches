@@ -37,7 +37,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          command: ['./entrypoint.sh', 'run_celery']
+          command: ['../entrypoint.sh', 'run_celery']
           env:
           - name: PGPASSWORD
             valueFrom:

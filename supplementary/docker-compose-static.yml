@@ -1,35 +1,30 @@
-version: '3.8'
+# This is based on the AGPL licensed docker-compose.yaml
+# file from archesproject/arches
+version: '2'
 services:
-    cantaloupe_afs:
-      image: uclalibrary/cantaloupe:5.0.3-0
-      volumes:
-        - cantaloupe-data:/imageroot
-      ports:
-        - 8183:8182
-      env_file:
-        - ./docker/env_file.env
 
-    arches:
-      image: arches_${ARCHES_PROJECT:?Must define ARCHES_PROJECT}:latest
+    arches_static_py:
+      container_name: arches_static_py
+      image: arches_${ARCHES_PROJECT}_static_py:latest
       restart: unless-stopped
       entrypoint: ["../entrypoint.sh"]
       build:
         context: .
-        dockerfile: ./Dockerfile
+        dockerfile: ./Dockerfile.static-py
         args:
           - ARCHES_PROJECT=$ARCHES_PROJECT
+          - VERSION=latest
       command: run_arches
       volumes:
-        - arches-log:/arches/arches/logs
-        - arches-static:/static_root
+        - arches-static-log:/arches/arches/logs
         - ./$ARCHES_PROJECT:/web_root/$ARCHES_PROJECT
         - ./entrypoint.sh:/web_root/entrypoint.sh
         - ./settings_docker.py:/web_root/arches/arches/settings_docker.py
       environment:
         - ARCHES_PROJECT=$ARCHES_PROJECT
-        - COMPRESS_OFFLINE=False
         - INSTALL_DEFAULT_GRAPHS=False
         - INSTALL_DEFAULT_CONCEPTS=False
+        - COMPRESS_OFFLINE=True
         - PGUSERNAME=postgres
         - PGPASSWORD=postgres
         - PGDBNAME=arches
@@ -47,6 +42,7 @@ services:
         # - DJANGO_REMOTE_DEBUG=False
         - DOMAIN_NAMES=localhost
         - PYTHONUNBUFFERED=0
+        - STATIC_URL=$STATIC_URL
         - TZ=PST
       ports:
         - '8000:8000'
@@ -54,21 +50,22 @@ services:
         - db
         - elasticsearch
         - couchdb
+        - arches_static
 
     arches_worker:
-      image: arches_${ARCHES_PROJECT}:latest
+      container_name: arches_worker
+      image: arches_${ARCHES_PROJECT}_static_py:latest
       restart: unless-stopped
       entrypoint: ["../entrypoint.sh"]
       build:
         context: .
-        dockerfile: ./Dockerfile
+        dockerfile: ./Dockerfile.static-py
         args:
           - ARCHES_PROJECT=$ARCHES_PROJECT
+          - VERSION=latest
       command: run_celery
-      user: root
       volumes:
-        - arches-log:/arches/arches/logs
-        - arches-static:/static_root
+        - arches-static-log:/arches/arches/logs
         - ./$ARCHES_PROJECT:/web_root/$ARCHES_PROJECT
         - ./entrypoint.sh:/web_root/entrypoint.sh
         - ./settings_docker.py:/web_root/arches/arches/settings_docker.py
@@ -99,17 +96,40 @@ services:
         - elasticsearch
         - couchdb
         - rabbitmq
+        - arches_static
+
+    arches_static:
+      container_name: arches_static
+      image: arches_${ARCHES_PROJECT}_static:latest
+      restart: unless-stopped
+      build:
+        context: .
+        dockerfile: ./Dockerfile.static
+        args:
+          - ARCHES_PROJECT=$ARCHES_PROJECT
+          - STATIC_URL=$STATIC_URL
+          - DJANGO_DUMMY_SECRET_KEY='c7ky-mc6vdnv+avp0r@(a)8y^51ex=25nogq@+q5*mxwdi'
+          - VERSION=latest
+      ports:
+        - '8080:8080'
+      environment:
+        - NGINX_PROXY_MODE=local
+        - NGINX_PROTOCOL=http
+        - LOCAL_PROXY_HOST=arches
+        - LOCAL_PROXY_PORT=8000
+        - DOMAIN_NAMES=localhost
+        - PUBLIC_MODE=False
+        - TZ=PST
 
     db:
+      container_name: db
       image: kartoza/postgis:12.0
       volumes:
-          - postgres-data:/var/lib/postgresql/data
-          - postgres-log:/var/log/postgresql
-          - ${ARCHES_ROOT}/arches/install/init-unix.sql:/docker-entrypoint-initdb.d/init.sql # to set up the DB template
+          - postgres-static-data:/var/lib/postgresql/data
+          - postgres-static-log:/var/log/postgresql
+          - ${ARCHES_ROOT:-./$ARCHES_PROJECT/$ARCHES_PROJECT/media/packages/arches}/arches/install/init-unix.sql:/docker-entrypoint-initdb.d/init.sql # to set up the DB template
       ports:
         - '5432:5432'
-      expose:
-        - '5432'
       environment:
         - POSTGRES_USER=postgres
         - POSTGRES_PASS=postgres
@@ -118,6 +138,7 @@ services:
         - TZ=PST
 
     couchdb:
+      container_name: couchdb
       image: couchdb:2.1.1
       ports:
         - "5984:5984"
@@ -125,13 +146,14 @@ services:
         COUCHDB_USER: admin
         COUCHDB_PASSWORD: password
       volumes:
-        - couchdb-data:/usr/local/var/lib/couchdb
-        - couchdb-log:/usr/local/var/log/couchdb
+        - couchdb-static-data:/usr/local/var/lib/couchdb
+        - couchdb-static-log:/usr/local/var/log/couchdb
 
     elasticsearch:
+      container_name: elasticsearch
       image: elasticsearch:7.5.1
       volumes:
-        - elasticsearch-data:/usr/share/elasticsearch/data
+        - elasticsearch-static-data:/usr/share/elasticsearch/data
       ports:
         - "9200:9200"
         - "9300:9300"
@@ -142,14 +164,13 @@ services:
         - "ES_JAVA_OPTS=-Xms400m -Xmx400m"
 
     rabbitmq:
+      container_name: rabbitmq
       image: rabbitmq
 
 volumes:
-    arches-log:
-    arches-static:
-    couchdb-data:
-    couchdb-log:
-    postgres-data:
-    postgres-log:
-    elasticsearch-data:
-    cantaloupe-data:
+    arches-static-log:
+    couchdb-static-data:
+    couchdb-static-log:
+    postgres-static-data:
+    postgres-static-log:
+    elasticsearch-static-data:

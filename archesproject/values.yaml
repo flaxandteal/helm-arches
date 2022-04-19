@@ -1,5 +1,8 @@
 # TODO: decide whether these should be directly parsed to/from the optional ingress also
 domainNames: arches.example.org
+staticUrl: http://arches.example.org/media/
+
+staticRoot: /static_root # not relevant for offline compression
 
 global:
   postgresql:
