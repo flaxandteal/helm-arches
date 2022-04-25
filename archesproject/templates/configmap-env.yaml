@@ -15,7 +15,6 @@ data:
   DJANGO_DEBUG: "False"
   DJANGO_MODE: PROD
   DJANGO_SETTINGS_MODULE: "{{ .Values.archesProject }}.settings"
-  DJANGO_SECRET_KEY: "c7ky-mc6vdnv+avp0r@(a)8y^51ex=25nogq@+q5$fnc*mxwdi"
   DOMAIN_NAMES: {{ .Values.domainNames }}
   ESHOST: elasticsearch-master
   ESPORT: "9200"
