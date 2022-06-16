@@ -29,3 +29,6 @@ data:
   PGUSERNAME: postgres
   PYTHONUNBUFFERED: "0"
   TZ: PST
+ {{- range $env, $value := .Values.env }}
+  {{ $env }}: {{ $value | quote }}
+ {{- end }}
