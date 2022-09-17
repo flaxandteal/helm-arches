@@ -20,4 +20,4 @@ jobs:
         run: |
           git config user.email "gh-action@users.noreply.github.com"
           git config user.name "gh-action"
-          ./hcr -chart-dir archesproject -token "${{ secrets.GITHUB_TOKEN }}"
+          ./hcr -charts-dir archesproject -token "${{ secrets.GITHUB_TOKEN }}"
