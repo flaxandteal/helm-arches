@@ -42,13 +42,14 @@ spec:
           - name: PGPASSWORD
             valueFrom:
               secretKeyRef:
-                key: postgresql-password
+                key: {{ default .Values.postgresqlPasswordKey "postgres-password" }}
                 name: {{ printf "%s-postgresql" .Release.Name }}
           - name: COUCHDB_PASS
-            valueFrom:
-              secretKeyRef:
-                key: adminPassword
-                name: {{ printf "%s-couchdb" .Release.Name }}
+            value: "UNSET"
+            #valueFrom:
+            #  secretKeyRef:
+            #    key: adminPassword
+            #    name: {{ printf "%s-couchdb" .Release.Name }}
           - name: CELERY_BROKER_URL
             valueFrom:
               secretKeyRef:

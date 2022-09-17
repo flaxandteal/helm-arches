@@ -71,6 +71,8 @@ tolerations: []
 
 affinity: {}
 
+postgresqlPasswordKey: postgresql-password
+
 # Subcharts
 
 postgresql:
@@ -78,9 +80,9 @@ postgresql:
     repository: postgis/postgis
     tag: "12-3.0-alpine"
 
-  securityContext:
-    runAsUser: 0
-    fsGroup: 0
+  primary:
+    containerSecurityContext:
+      runAsUser: 0
 
   extraEnv:
     - name: POSTGRES_MULTIPLE_EXTENSIONS
@@ -97,3 +99,4 @@ rabbitmq:
   rabbitmq:
     username: user
     password: <YOUR_NEW_RABBITMQ_PASSWORD> # TODO: needs improved
+

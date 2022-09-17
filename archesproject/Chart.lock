@@ -4,12 +4,9 @@ dependencies:
   version: 7.7.0
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 8.10.6
-- name: couchdb
-  repository: https://apache.github.io/couchdb-helm
-  version: 3.3.4
+  version: 11.9.1
 - name: rabbitmq
   repository: https://charts.bitnami.com/bitnami
-  version: 8.15.1
-digest: sha256:12ac64ef57115f488574e9811d0dfda19a2c5c8bb917848912775b6e82893846
-generated: "2021-05-24T18:27:34.280616423+01:00"
+  version: 10.3.2
+digest: sha256:bd3fd826c33c00fa771048c7cfa5319ff57e3c07b383d8792b415e886a33c30e
+generated: "2022-09-17T11:39:55.294579887+01:00"
