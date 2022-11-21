@@ -23,7 +23,7 @@ icon: https://www.archesproject.org/wp-content/uploads/2020/02/arches-logo-r-onl
 engine: gotpl
 dependencies:
   - name: elasticsearch
-    version: 7.7.0
+    version: 8.4.0
     repository: https://helm.elastic.co/
   - name: postgresql
     version: 11.9.1
