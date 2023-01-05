@@ -7,13 +7,21 @@ metadata:
 data:
   ARCHES_ROOT: "/web_root/arches"
   ARCHES_PROJECT: "{{ .Values.archesProject }}"
+  {{- if not (hasKey .Values.env "COMPRESS_ENABLED") }}
   COMPRESS_ENABLED: "True"
+  {{- end }}
+  {{- if not (hasKey .Values.env "COMPRESS_OFFLINE") }}
   COMPRESS_OFFLINE: "True"
+  {{- end }}
   COUCHDB_HOST: {{ printf "%s-couchdb" .Release.Name }}
   COUCHDB_PORT: "5984"
   COUCHDB_USER: admin
+  {{- if not (hasKey .Values.env "DJANGO_DEBUG") }}
   DJANGO_DEBUG: "False"
-  DJANGO_MODE: PROD
+  {{- end }}
+  {{- if not (hasKey .Values.env "DJANGO_MODE") }}
+  DJANGO_MODE: "PROD"
+  {{- end }}
   DJANGO_SETTINGS_MODULE: "{{ .Values.archesProject }}.settings"
   DOMAIN_NAMES: {{ .Values.domainNames }}
   ESHOST: elasticsearch-master

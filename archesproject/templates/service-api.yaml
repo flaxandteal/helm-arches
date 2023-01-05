@@ -1,0 +1,18 @@
+{{- if .Values.tiers.api.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "arches.fullname" . }}
+  labels:
+    {{- include "arches.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 8088
+      protocol: TCP
+      name: http
+  selector:
+    tier: api
+    {{- include "arches.selectorLabels" . | nindent 4 }}
+{{- end }}

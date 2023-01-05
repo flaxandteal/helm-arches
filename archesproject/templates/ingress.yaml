@@ -37,19 +37,26 @@ spec:
       http:
         paths:
 {{- if semverCompare ">=1.19-0" $kubeVersion }}
-          - path: /?(.*)
-            backend:
+          - backend:
               service:
-                name: {{ $fullName }}
+                name: {{ $fullName }}-static
                 port:
                   number: {{ $svcPort }}
+            path: /static/build/(.*)
             pathType: Prefix
           - backend:
               service:
                 name: {{ $fullName }}-static
                 port:
                   number: {{ $svcPort }}
-            path: /media/?(.*)
+            path: /static/?(js/.*)
+            pathType: Prefix
+          - path: /?(.*)
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: {{ $svcPort }}
             pathType: Prefix
 {{- else }}
           - path: /?(.*)
