@@ -1,8 +1,10 @@
+{{- if .Values.tiers.api.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "arches.fullname" . }}-http
+  name: {{ include "arches.fullname" . }}-api
   labels:
+    tier: api
     {{- include "arches.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
@@ -12,5 +14,6 @@ spec:
       protocol: TCP
       name: http
   selector:
-    tier: backend
+    tier: api
     {{- include "arches.selectorLabels" . | nindent 4 }}
+{{- end }}

@@ -1,0 +1,34 @@
+apiVersion: v1
+entries:
+  archesproject:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-10-18T12:20:54.858719098+02:00"
+    description: A Helm chart for Kubernetes
+    digest: c262f7269459773bac53470649470b78b72a72bac6571b0931c8456c6bfc5ee1
+    name: archesproject
+    type: application
+    urls:
+    - ./archesproject/archesproject-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-10-18T12:20:54.858719098+02:00"
+    description: A Helm chart for Kubernetes
+    digest: c262f7269459773bac53470649470b78b72a72bac6571b0931c8456c6bfc5ee1
+    name: archesproject
+    type: application
+    urls:
+    - ./archesproject/archesproject-0.0.4.tgz
+    version: 0.0.4
+  - apiVersion: v2
+    appVersion: 7.2.1
+    created: "2022-10-18T12:20:54.858719098+02:00"
+    description: A Helm chart for Kubernetes
+    digest: c262f7269459773bac53470649470b78b72a72bac6571b0931c8456c6bfc5ee1
+    name: archesproject
+    type: application
+    urls:
+    - ./archesproject/archesproject-0.0.5.tgz
+    version: 0.0.5
+generated: "2022-10-18T12:20:54.857888206+02:00"

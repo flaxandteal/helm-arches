@@ -28,6 +28,10 @@ nameOverride: ""
 fullnameOverride: ""
 mobileOauthClientId: null
 
+tiers:
+  api:
+    enabled: true
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -64,6 +68,8 @@ ingress:
   #      - chart-example.local
 
 resources: {}
+resourcesStatic: {}
+resourcesWorker: {}
 
 nodeSelector: {}
 
@@ -100,3 +106,4 @@ rabbitmq:
     username: user
     password: <YOUR_NEW_RABBITMQ_PASSWORD> # TODO: needs improved
 
+mappingJson: null

@@ -1,20 +1,21 @@
+{{- if .Values.tiers.api.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "arches.fullname" . }}-worker
+  name: {{ include "arches.fullname" . }}-api
   labels:
-    tier: worker
+    tier: api
     {{- include "arches.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      tier: worker
+      tier: api
       {{- include "arches.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        tier: worker
+        tier: api
         {{- include "arches.selectorLabels" . | nindent 8 }}
       annotations:
         checksum/configmap-env: {{ include (print $.Template.BasePath "/configmap-env.yaml") . | sha256sum }}
@@ -35,21 +36,45 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ['../entrypoint.sh', 'run_arches_graphql']
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            timeoutSeconds: 5
+          {{- if .Values.mappingJson }}
+          volumeMounts:
+          - name: mapping-file
+            mountPath: "/data_root"
+            readOnly: true
+          {{- end }}
           resources:
-            {{- toYaml .Values.resourcesWorker | nindent 12 }}
-          command: ['../entrypoint.sh', 'run_celery']
+            {{- toYaml .Values.resources | nindent 12 }}
           env:
+          {{- if .Values.mappingJson }}
+          - name: WELL_KNOWN_MAPPING_FILE
+            value: /data_root/mapping.json
+          {{- end }}
           - name: PGPASSWORD
             valueFrom:
               secretKeyRef:
                 key: {{ default .Values.postgresqlPasswordKey "postgres-password" }}
                 name: {{ printf "%s-postgresql" .Release.Name }}
           - name: COUCHDB_PASS
-            value: "UNSET"
-            #valueFrom:
-            #  secretKeyRef:
-            #    key: adminPassword
-            #    name: {{ printf "%s-couchdb" .Release.Name }}
+            value: UNSET
+            #alueFrom:
+            # secretKeyRef:
+            #   key: adminPassword
+            #   name: {{ printf "%s-couchdb" .Release.Name }}
           - name: CELERY_BROKER_URL
             valueFrom:
               secretKeyRef:
@@ -74,3 +99,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+    {{- if .Values.mappingJson }}
+      volumes:
+      - name: mapping-file
+        configMap:
+          name: {{ template "arches.fullname" $ }}-mapping
+    {{- end }}
+{{- end }}
