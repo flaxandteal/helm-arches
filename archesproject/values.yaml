@@ -107,3 +107,4 @@ rabbitmq:
     password: <YOUR_NEW_RABBITMQ_PASSWORD> # TODO: needs improved
 
 mappingJson: null
+mappingJsonConfigMap: null # Provide this if the mapping JSON already exists in-cluster

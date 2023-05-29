@@ -51,7 +51,7 @@ spec:
               path: /
               port: http
             timeoutSeconds: 5
-          {{- if .Values.mappingJson }}
+          {{- if or .Values.mappingJsonConfigMap .Values.mappingJson }}
           volumeMounts:
           - name: mapping-file
             mountPath: "/data_root"
@@ -60,7 +60,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
-          {{- if .Values.mappingJson }}
+          {{- if or .Values.mappingJsonConfigMap .Values.mappingJson }}
           - name: WELL_KNOWN_MAPPING_FILE
             value: /data_root/mapping.json
           {{- end }}
@@ -99,7 +99,12 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-    {{- if .Values.mappingJson }}
+    {{- if .Values.mappingJsonConfigMap }}
+      volumes:
+      - name: mapping-file
+        configMap:
+          name: {{ .Values.mappingJsonConfigMap }}
+    {{- else if .Values.mappingJson }}
       volumes:
       - name: mapping-file
         configMap:
