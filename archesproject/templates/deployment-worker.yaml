@@ -26,6 +26,42 @@ spec:
       serviceAccountName: {{ include "arches.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: {{ .Chart.Name }}-migrations
+          envFrom:
+          - configMapRef:
+              name: {{ template "arches.fullname" . }}-env
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resourcesWorker | nindent 12 }}
+          command: ['../entrypoint.sh', 'run_migrations']
+          env:
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: {{ default .Values.postgresqlPasswordKey "postgres-password" }}
+                name: {{ printf "%s-postgresql" .Release.Name }}
+          - name: COUCHDB_PASS
+            value: "UNSET"
+            #valueFrom:
+            #  secretKeyRef:
+            #    key: adminPassword
+            #    name: {{ printf "%s-couchdb" .Release.Name }}
+          - name: CELERY_BROKER_URL
+            valueFrom:
+              secretKeyRef:
+                key: celery-broker-url
+                name: {{ template "arches.fullname" $ }}
+          {{- range $env, $value := .Values.secretEnv }}
+          - name: {{ $env }}
+            valueFrom:
+              secretKeyRef:
+                key: {{ $env }}
+                name: {{ template "arches.fullname" $ }}-env
+          {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           envFrom:
