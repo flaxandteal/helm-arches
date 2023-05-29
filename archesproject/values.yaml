@@ -106,3 +106,4 @@ rabbitmq:
     username: user
     password: <YOUR_NEW_RABBITMQ_PASSWORD> # TODO: needs improved
 
+mappingJson: null

@@ -1,6 +1,6 @@
 ARG VERSION
 ARG ARCHES_PROJECT=afs
-ARG ARCHES_BASE=arches
+ARG ARCHES_BASE=arches_coral_base
 ARG WEB_ROOT=/web_root
 FROM $ARCHES_BASE
 FROM $ARCHES_BASE as arches_static_cache

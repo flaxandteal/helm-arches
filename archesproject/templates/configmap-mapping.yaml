@@ -1,0 +1,11 @@
+{{- if .Values.mappingJson -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "arches.fullname" . }}-mapping
+  labels:
+    {{- include "arches.labels" . | nindent 4 }}
+data:
+  mapping.json: |-
+{{ .Values.mappingJson | indent 4 }}
+{{- end }}

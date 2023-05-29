@@ -39,7 +39,7 @@ spec:
           command: ['../entrypoint.sh', 'run_arches_graphql']
           ports:
             - name: http
-              containerPort: 8088
+              containerPort: 8000
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -51,9 +51,19 @@ spec:
               path: /
               port: http
             timeoutSeconds: 5
+          {{- if .Values.mappingJson }}
+          volumeMounts:
+          - name: mapping-file
+            mountPath: "/data_root"
+            readOnly: true
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
+          {{- if .Values.mappingJson }}
+          - name: WELL_KNOWN_MAPPING_FILE
+            value: /data_root/mapping.json
+          {{- end }}
           - name: PGPASSWORD
             valueFrom:
               secretKeyRef:
@@ -88,5 +98,11 @@ spec:
     {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- if .Values.mappingJson }}
+      volumes:
+      - name: mapping-file
+        configMap:
+          name: {{ template "arches.fullname" $ }}-mapping
     {{- end }}
 {{- end }}

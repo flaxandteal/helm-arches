@@ -2,14 +2,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "arches.fullname" . }}
+  name: {{ include "arches.fullname" . }}-api
   labels:
+    tier: api
     {{- include "arches.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: 8088
+      targetPort: 8000
       protocol: TCP
       name: http
   selector:

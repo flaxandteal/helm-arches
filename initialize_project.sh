@@ -36,8 +36,14 @@ then
   exit 4
 fi
 
+export ARCHES_BASE=arches_${ARCHES_PROJECT}_base
+
 cp $SCRIPT_DIR/supplementary/* .
-(cd $ARCHES_ROOT; docker build . -t arches)
+(cd $ARCHES_ROOT; docker build . -t $ARCHES_BASE)
+
+mkdir -p ./docker
+touch ./docker/env_file.env
+touch $ARCHES_PROJECT/requirements.txt
 
 if ! grep -q 'from arches\.settings_docker import \*' $ARCHES_PROJECT/$ARCHES_PROJECT/settings.py
 then
