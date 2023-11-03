@@ -18,6 +18,8 @@ metadata:
     {{- include "arches.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
@@ -55,7 +57,7 @@ spec:
           - path: /?(.*)
             backend:
               service:
-                name: {{ $fullName }}
+                name: {{ $fullName }}-http
                 port:
                   number: {{ $svcPort }}
             pathType: Prefix
