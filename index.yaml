@@ -3,6 +3,42 @@ entries:
   archesproject:
   - apiVersion: v2
     appVersion: 7.2.1
+    created: "2023-11-03T01:42:17.873032285Z"
+    dependencies:
+    - name: elasticsearch
+      repository: https://helm.elastic.co/
+      version: 8.5.1
+    - name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.9.1
+    - name: rabbitmq
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.3.2
+    description: An initial Helm chart for archesproject.org software (unofficial)
+    digest: 26bcea90644bd24e5d35a179c1a9083bf6b99da687ac6a04ff94650da52c4855
+    home: https://www.archesproject.org/
+    icon: https://www.archesproject.org/wp-content/uploads/2020/02/arches-logo-r-only.svg
+    keywords:
+    - arches
+    - heritage
+    - geospatial
+    - history
+    - conservation
+    - django
+    - postgis
+    maintainers:
+    - email: phil.weir@flaxandteal.co.uk
+      name: Phil Weir
+    name: archesproject
+    sources:
+    - https://github.com/archesproject/arches/
+    - https://github.com/flaxandteal/helm-arches/
+    type: application
+    urls:
+    - https://github.com/flaxandteal/helm-arches/releases/download/0.0.6/archesproject-0.0.6.tgz
+    version: 0.0.6
+  - apiVersion: v2
+    appVersion: 7.2.1
     created: "2023-05-29T17:33:01.626117227Z"
     dependencies:
     - name: elasticsearch
@@ -73,4 +109,4 @@ entries:
     urls:
     - https://github.com/flaxandteal/helm-arches/releases/download/0.0.3/archesproject-0.0.3.tgz
     version: 0.0.3
-generated: "2023-05-29T17:33:01.626120227Z"
+generated: "2023-11-03T01:42:17.873038585Z"
