@@ -18,6 +18,10 @@ image:
   repository: flaxandteal/arches
   pullPolicy: IfNotPresent
 
+imageApi:
+  repository: flaxandteal/arches
+  pullPolicy: IfNotPresent
+
 imageStatic:
   repository: flaxandteal/arches-static
   tag: "5.0"

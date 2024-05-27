@@ -34,7 +34,7 @@ spec:
               name: {{ template "arches.fullname" . }}-env
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          image: "{{ default .Values.image.repository .Values.imageApi.repository }}:{{ default .Chart.AppVersion .Values.imageApi.tag | default .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ['../entrypoint.sh', 'run_api']
           ports:
