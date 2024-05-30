@@ -18,9 +18,14 @@ image:
   repository: flaxandteal/arches
   pullPolicy: IfNotPresent
 
-imageApi:
-  repository: flaxandteal/arches
-  pullPolicy: IfNotPresent
+api:
+  image:
+    repository: flaxandteal/arches
+    pullPolicy: IfNotPresent
+  readinessProbe:
+    initialDelaySeconds: 30
+  livenessProbe:
+    initialDelaySeconds: 30
 
 imageStatic:
   repository: flaxandteal/arches-static
