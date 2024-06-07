@@ -41,18 +41,18 @@ spec:
             - name: http
               containerPort: 8000
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-            timeoutSeconds: 5
-            initialDelaySeconds: {{ .Values.api.livenessProbe.initialDelaySeconds }}
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-            timeoutSeconds: 5
-            initialDelaySeconds: {{ .Values.api.readinessProbe.initialDelaySeconds }}
+          #livenessProbe:
+          #  httpGet:
+          #    path: /
+          #    port: http
+          #  timeoutSeconds: 5
+          #  initialDelaySeconds: {{ .Values.api.livenessProbe.initialDelaySeconds }}
+          #readinessProbe:
+          #  httpGet:
+          #    path: /
+          #    port: http
+          #  timeoutSeconds: 5
+          #  initialDelaySeconds: {{ .Values.api.readinessProbe.initialDelaySeconds }}
           {{- if or .Values.mappingJsonConfigMap .Values.mappingJson }}
           volumeMounts:
           - name: mapping-file
