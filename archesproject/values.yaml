@@ -13,6 +13,8 @@ global:
 secretEnv: {}
 
 replicaCount: 1
+workerReplicaCount: 1
+staticReplicaCount: 1
 
 image:
   repository: flaxandteal/arches

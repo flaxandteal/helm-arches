@@ -1,6 +1,6 @@
 # Arches Unofficial Chart Repository [UNOFFICIAL]
 
-## v0.0.10
+## v0.0.11
 
 ### Getting Started
 

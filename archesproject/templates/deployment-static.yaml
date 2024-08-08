@@ -6,7 +6,7 @@ metadata:
     tier: frontend
     {{- include "arches.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ default .Values.replicaCount .Values.staticReplicaCount }}
   selector:
     matchLabels:
       tier: frontend
