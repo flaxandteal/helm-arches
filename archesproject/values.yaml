@@ -20,6 +20,14 @@ image:
   repository: flaxandteal/arches
   pullPolicy: IfNotPresent
 
+worker:
+  image:
+    pullPolicy: IfNotPresent
+  readinessProbe:
+    initialDelaySeconds: 30
+  livenessProbe:
+    initialDelaySeconds: 30
+
 api:
   image:
     repository: flaxandteal/arches
