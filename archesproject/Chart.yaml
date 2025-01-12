@@ -2,8 +2,8 @@ apiVersion: v2
 description: An initial Helm chart for archesproject.org software (unofficial)
 name: archesproject
 type: application
-version: 0.0.14
-appVersion: "7.5.1"
+version: 0.0.15
+appVersion: "7.6.4"
 keywords:
   - arches
   - heritage

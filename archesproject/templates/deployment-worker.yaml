@@ -33,7 +33,7 @@ spec:
               name: {{ template "arches.fullname" . }}-env
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ default .Values.image.repository .Values.worker.image.repository }}:{{ default .Chart.AppVersion .Values.worker.image.tag | default .Values.image.tag }}"
+          image: "{{ default .Values.image.repository .Values.worker.image.repository }}:{{ .Values.worker.image.tag | default .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             {{- toYaml .Values.resourcesWorker | nindent 12 }}
