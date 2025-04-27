@@ -50,6 +50,8 @@ mobileOauthClientId: null
 tiers:
   api:
     enabled: true
+  worker:
+    enabled: true
 
 serviceAccount:
   # Specifies whether a service account should be created
