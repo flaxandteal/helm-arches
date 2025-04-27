@@ -45,16 +45,9 @@ spec:
                 name: {{ $fullName }}-static
                 port:
                   number: {{ $svcPort }}
-            path: /static/build/(.*)
+            path: /static
             pathType: Prefix
-          - backend:
-              service:
-                name: {{ $fullName }}-static
-                port:
-                  number: {{ $svcPort }}
-            path: /static/?(js/.*)
-            pathType: Prefix
-          - path: /?(.*)
+          - path: /
             backend:
               service:
                 name: {{ $fullName }}-http
@@ -62,14 +55,14 @@ spec:
                   number: {{ $svcPort }}
             pathType: Prefix
 {{- else }}
-          - path: /?(.*)
+          - path: /
             backend:
               serviceName: {{ $fullName }}
               servicePort: {{ $svcPort }}
           - backend:
               serviceName: {{ $fullName }}-static
               servicePort: {{ $svcPort }}
-            path: /media/?(.*)
+            path: /media/
 {{- end -}}
   {{- end }}
 {{- end }}
