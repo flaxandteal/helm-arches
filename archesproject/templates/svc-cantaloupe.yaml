@@ -1,0 +1,18 @@
+{{- if .Values.cantaloupe.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "arches.fullname" . }}-cantaloupe
+  labels:
+    app: cantaloupe
+    {{- include "arches.labels" . | nindent 4 }}
+spec:
+  ports:
+  - name: cantaloupe
+    port: 8182
+    protocol: TCP
+    targetPort: cantaloupe
+  selector:
+    app: cantaloupe
+    {{- include "arches.selectorLabels" . | nindent 4 }}
+{{- end }}

@@ -1,0 +1,60 @@
+{{- if .Values.cantaloupe.enabled -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "arches.fullname" . }}-cantaloupe
+  labels:
+    app: cantaloupe
+    {{- include "arches.labels" . | nindent 4 }}
+spec:
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: cantaloupe
+      {{- include "arches.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: cantaloupe
+        {{- include "arches.labels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "arches.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+      - image: {{ default .Values.cantaloupe.image "uclalibrary/cantaloupe:5.0.3-0" }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        name: cantaloupe
+        ports:
+        - containerPort: 8182
+          name: cantaloupe
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /imageroot
+          name: data
+        securityContext:
+          {{- toYaml .Values.securityContext | nindent 10 }}
+    serviceAccountName: {{ include "arches.serviceAccountName" . }}
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      labels:
+        {{- include "arches.labels" . | nindent 8 }}
+        app: cantaloupe
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: {{ default .Values.cantaloupe.storage "100Gi" }}
+      volumeMode: Filesystem
+{{- end }}
