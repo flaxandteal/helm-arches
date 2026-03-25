@@ -17,7 +17,8 @@ workerReplicaCount: 1
 staticReplicaCount: 1
 
 image:
-  repository: flaxandteal/arches
+  repository: ghcr.io/flaxandteal/arches-base
+  tag: docker-8.1.0-release
   pullPolicy: IfNotPresent
 
 worker:
@@ -30,7 +31,8 @@ worker:
 
 api:
   image:
-    repository: flaxandteal/arches
+    repository: ghcr.io/flaxandteal/arches-base
+    tag: docker-8.1.0-release
     pullPolicy: IfNotPresent
   readinessProbe:
     initialDelaySeconds: 30
@@ -123,6 +125,10 @@ couchdb:
       uuid: <YOUR_NEW_COUCHDB_UUID>
 
 rabbitmq:
+  image:
+    registry: docker.io
+    repository: rabbitmq
+    tag: "3.10.7"
   rabbitmq:
     username: user
     password: <YOUR_NEW_RABBITMQ_PASSWORD> # TODO: needs improved
