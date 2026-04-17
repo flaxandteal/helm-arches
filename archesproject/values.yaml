@@ -44,6 +44,79 @@ imageStatic:
   tag: "5.0"
   pullPolicy: IfNotPresent
 
+# IIIF image server (Cantaloupe). When enabled, a Deployment + Service + ConfigMap
+# are rendered, and CANTALOUPE_HOST/PORT are injected into the arches env
+# configmap automatically (unless overridden via .Values.env).
+cantaloupe:
+  enabled: false
+  replicaCount: 1
+  image:
+    repository: uclalibrary/cantaloupe
+    tag: "5.0.3-0"
+    pullPolicy: IfNotPresent
+
+  source:
+    # One of: http, filesystem, s3, azure.
+    # Picks which cantaloupe source.static backend to configure below.
+    type: http
+
+    # HttpSource — fetches images by HTTPS URL. Works with any public/URL-
+    # accessible store (Azure anonymous-blob, public S3 bucket, plain web server).
+    http:
+      # Prefix prepended to every IIIF identifier, e.g.
+      #   https://myacct.blob.core.windows.net/media/images/
+      #   https://s3.amazonaws.com/my-bucket/
+      urlPrefix: ""
+      # Optional basic-auth creds if the endpoint requires it.
+      basicAuth:
+        username: ""
+        password: ""
+
+    # FilesystemSource — reads from a mounted volume.
+    filesystem:
+      # Path inside the container to read from.
+      mountPath: /imageroot
+      # Optional PVC to mount at mountPath. If empty, no volume is created
+      # (useful when you bake images into a custom cantaloupe image).
+      persistentVolumeClaimName: ""
+      # Prefix prepended to every IIIF identifier before filesystem lookup.
+      pathPrefix: ""
+
+    # S3Source — AWS S3 or any S3-compatible endpoint (MinIO, Wasabi, etc.)
+    s3:
+      endpoint: ""          # e.g. https://s3.us-east-1.amazonaws.com
+      region: ""
+      bucket: ""
+      accessKeyId: ""
+      secretAccessKey: ""
+      pathPrefix: ""
+
+    # AzureStorageSource — native Azure Blob source (shared-key auth).
+    # NOTE: in Cantaloupe 5.0.3, BasicLookupStrategy for this source has no
+    # path_prefix option. Use ScriptLookupStrategy or HttpSource if you need
+    # a prefix. For anonymous-readable blobs, prefer source.type=http.
+    azure:
+      accountName: ""
+      accountKey: ""
+      container: ""
+
+  # Extra raw cantaloupe.properties entries, appended verbatim.
+  # Use this for anything not covered by the structured values above.
+  extraProperties: {}
+    # HttpSource.allow_insecure: "true"
+    # log.application.level: debug
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      memory: 2Gi
+  readinessProbe:
+    initialDelaySeconds: 10
+  livenessProbe:
+    initialDelaySeconds: 30
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""

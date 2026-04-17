@@ -1,0 +1,80 @@
+{{- if .Values.cantaloupe.enabled -}}
+{{- $src := .Values.cantaloupe.source }}
+{{- $useFsPvc := and (eq $src.type "filesystem") $src.filesystem.persistentVolumeClaimName }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "arches.fullname" . }}-cantaloupe
+  labels:
+    {{- include "arches.labels" . | nindent 4 }}
+    app.kubernetes.io/component: cantaloupe
+spec:
+  replicas: {{ .Values.cantaloupe.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "arches.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: cantaloupe
+  template:
+    metadata:
+      labels:
+        {{- include "arches.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: cantaloupe
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: cantaloupe
+          image: "{{ .Values.cantaloupe.image.repository }}:{{ .Values.cantaloupe.image.tag }}"
+          imagePullPolicy: {{ .Values.cantaloupe.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8182
+              protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /etc/cantaloupe.properties
+              subPath: cantaloupe.properties
+              readOnly: true
+            {{- if $useFsPvc }}
+            - name: images
+              mountPath: {{ $src.filesystem.mountPath }}
+              readOnly: true
+            {{- end }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: {{ .Values.cantaloupe.readinessProbe.initialDelaySeconds }}
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: {{ .Values.cantaloupe.livenessProbe.initialDelaySeconds }}
+            periodSeconds: 30
+          resources:
+            {{- toYaml .Values.cantaloupe.resources | nindent 12 }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "arches.fullname" . }}-cantaloupe
+        {{- if $useFsPvc }}
+        - name: images
+          persistentVolumeClaim:
+            claimName: {{ $src.filesystem.persistentVolumeClaimName }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end -}}

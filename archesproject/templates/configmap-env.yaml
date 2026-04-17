@@ -37,6 +37,14 @@ data:
   PGUSERNAME: postgres
   PYTHONUNBUFFERED: "0"
   TZ: PST
+  {{- if .Values.cantaloupe.enabled }}
+  {{- if not (hasKey .Values.env "CANTALOUPE_HOST") }}
+  CANTALOUPE_HOST: {{ printf "%s-cantaloupe" (include "arches.fullname" .) | quote }}
+  {{- end }}
+  {{- if not (hasKey .Values.env "CANTALOUPE_PORT") }}
+  CANTALOUPE_PORT: "8182"
+  {{- end }}
+  {{- end }}
  {{- range $env, $value := .Values.env }}
   {{ $env }}: {{ $value | quote }}
  {{- end }}

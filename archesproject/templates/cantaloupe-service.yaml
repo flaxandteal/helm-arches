@@ -1,0 +1,19 @@
+{{- if .Values.cantaloupe.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "arches.fullname" . }}-cantaloupe
+  labels:
+    {{- include "arches.labels" . | nindent 4 }}
+    app.kubernetes.io/component: cantaloupe
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "arches.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: cantaloupe
+  ports:
+    - name: http
+      port: 8182
+      targetPort: http
+      protocol: TCP
+{{- end -}}
