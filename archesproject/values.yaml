@@ -99,6 +99,8 @@ cantaloupe:
       accountName: ""
       accountKey: ""
       container: ""
+      accountKey: ""
+      accountKeySecet: {}
 
   # Extra raw cantaloupe.properties entries, appended verbatim.
   # Use this for anything not covered by the structured values above.

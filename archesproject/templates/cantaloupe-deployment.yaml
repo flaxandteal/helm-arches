@@ -28,6 +28,14 @@ spec:
         - name: cantaloupe
           image: "{{ .Values.cantaloupe.image.repository }}:{{ .Values.cantaloupe.image.tag }}"
           imagePullPolicy: {{ .Values.cantaloupe.image.pullPolicy }}
+          {{- with $src.azure.accountKeySecret }}
+          env:
+            - name: AZURESTORAGESOURCE_ACCOUNT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .name }}
+                  key {{ .key }}
+          {{- end }}
           ports:
             - name: http
               containerPort: 8182

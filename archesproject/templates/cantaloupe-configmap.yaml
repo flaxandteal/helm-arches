@@ -55,7 +55,9 @@ data:
     {{- else if eq $src.type "azure" }}
     source.static = AzureStorageSource
     AzureStorageSource.account_name = {{ required "cantaloupe.source.azure.accountName is required when source.type=azure" $src.azure.accountName }}
-    AzureStorageSource.account_key = {{ required "cantaloupe.source.azure.accountKey is required when source.type=azure" $src.azure.accountKey }}
+    {{- with $src.azure.accountKey }}
+    AzureStorageSource.account_key = {{ . }}
+    {{- end }}
     AzureStorageSource.container_name = {{ required "cantaloupe.source.azure.container is required when source.type=azure" $src.azure.container }}
     AzureStorageSource.chunking.enabled = true
     AzureStorageSource.chunk_size = 512K
