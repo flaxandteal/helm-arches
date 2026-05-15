@@ -34,7 +34,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .name }}
-                  key {{ .key }}
+                  key: {{ .key }}
           {{- end }}
           ports:
             - name: http
