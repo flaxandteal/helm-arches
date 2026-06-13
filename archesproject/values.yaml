@@ -183,6 +183,7 @@ tolerations: []
 affinity: {}
 
 postgresqlPasswordKey: postgresql-password
+postgresqlSecretName: "" # defaults to {releaseName}-postgresql
 
 # Subcharts
 
