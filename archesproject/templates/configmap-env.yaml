@@ -31,10 +31,18 @@ data:
   MOBILE_OAUTH_CLIENT_ID: "{{ default "" .Values.mobileOauthClientId }}"
   STATIC_ROOT: "{{ .Values.staticRoot }}"
   STATIC_URL: "{{ .Values.staticUrl }}"
+  {{- if not (hasKey .Values.env "PGDBNAME") }}
   PGDBNAME: arches
+  {{- end }}
+  {{- if not (hasKey .Values.env "PGHOST") }}
   PGHOST: {{ printf "%s-postgresql" .Release.Name }}
+  {{- end }}
+  {{- if not (hasKey .Values.env "PGPORT") }}
   PGPORT: "5432"
+  {{- end }}
+  {{- if not (hasKey .Values.env "PGUSERNAME") }}
   PGUSERNAME: postgres
+  {{- end }}
   PYTHONUNBUFFERED: "0"
   TZ: PST
   {{- if .Values.cantaloupe.enabled }}
