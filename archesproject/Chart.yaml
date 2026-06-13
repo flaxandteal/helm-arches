@@ -2,7 +2,7 @@ apiVersion: v2
 description: An initial Helm chart for archesproject.org software (unofficial)
 name: archesproject
 type: application
-version: 0.0.21
+version: 0.0.22
 appVersion: "8.1"
 keywords:
   - arches
@@ -25,9 +25,12 @@ dependencies:
   - name: elasticsearch
     version: 8.5.1
     repository: https://helm.elastic.co/
+    condition: elasticsearch.enabled
   - name: postgresql
     version: 11.9.1
     repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
   - name: rabbitmq
     repository: https://charts.bitnami.com/bitnami
     version: 10.3.2
+    condition: rabbitmq.enabled

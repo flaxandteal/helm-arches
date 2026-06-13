@@ -166,8 +166,15 @@ ingress:
   #      - chart-example.local
 
 resources: {}
+resourcesApi: {}
 resourcesStatic: {}
 resourcesWorker: {}
+
+# Per-tier affinity (falls back to shared `affinity` if not set)
+affinityHttp: {}
+affinityApi: {}
+affinityWorker: {}
+affinityStatic: {}
 
 nodeSelector: {}
 
@@ -179,7 +186,11 @@ postgresqlPasswordKey: postgresql-password
 
 # Subcharts
 
+elasticsearch:
+  enabled: true
+
 postgresql:
+  enabled: true
   image:
     repository: postgis/postgis
     tag: "12-3.0-alpine"
@@ -200,6 +211,7 @@ couchdb:
       uuid: <YOUR_NEW_COUCHDB_UUID>
 
 rabbitmq:
+  enabled: true
   image:
     registry: docker.io
     repository: rabbitmq
