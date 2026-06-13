@@ -69,7 +69,7 @@ spec:
           - name: PGPASSWORD
             valueFrom:
               secretKeyRef:
-                key: {{ default .Values.postgresqlPasswordKey "postgres-password" }}
+                key: {{ default "postgres-password" .Values.postgresqlPasswordKey }}
                 name: {{ default (printf "%s-postgresql" .Release.Name) .Values.postgresqlSecretName }}
           - name: COUCHDB_PASS
             value: UNSET
